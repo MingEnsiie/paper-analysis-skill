@@ -1,8 +1,8 @@
-# Output Schema
+# 输出结构说明
 
-`report.json` is the source of truth for single-paper analysis.
+`report.json` 是单篇论文分析的事实源。
 
-## Single-Paper Keys
+## 单篇论文字段
 
 - `paper_metadata`
 - `research_problem`
@@ -21,7 +21,7 @@
 - `credibility_assessment`
 - `uncertainties`
 
-## Comparison Keys
+## 多篇对比字段
 
 - `papers`
 - `shared_task`
@@ -33,4 +33,4 @@
 - `research_gaps`
 - `overall_takeaways`
 
-Use explicit placeholders such as `unknown` or `not_reported` instead of guessing.
+遇到缺失信息时，使用 `unknown` 或 `not_reported` 这类显式占位值，不要补猜。

@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def load_module():
-    module_path = Path("skillset/paper-analysis/scripts/analyze_paper.py")
+    module_path = Path("scripts/analyze_paper.py")
     spec = spec_from_file_location("paper_analysis_analyze", module_path)
     module = module_from_spec(spec)
     assert spec.loader is not None
@@ -65,4 +65,23 @@ def test_single_paper_pipeline_writes_expected_outputs(tmp_path, monkeypatch):
 
     report_json = json.loads((out_dir / "report.json").read_text(encoding="utf-8"))
     assert report_json["paper_metadata"]["title"] == "Example Paper"
-    assert "## Research Problem" in (out_dir / "report.md").read_text(encoding="utf-8")
+    assert "## 研究问题" in (out_dir / "report.md").read_text(encoding="utf-8")
+
+
+def test_analyze_extracted_content_uses_chinese_readable_defaults(tmp_path):
+    analyze_paper = load_module()
+    pdf_path = tmp_path / "example-paper.pdf"
+    extracted = {
+        "source_path": str(pdf_path),
+        "extraction_method": "text",
+        "content": "",
+    }
+
+    analysis = analyze_paper.analyze_extracted_content(extracted)
+    report = analysis["report"]
+
+    assert report["paper_metadata"]["title"] == "Example Paper"
+    assert report["research_problem"]["summary"] == "未提取到有效论文文本。"
+    assert report["core_idea"]["summary"] == "未知"
+    assert report["method"]["summary"] == "未知"
+    assert report["experimental_setup"]["summary"] == "未知"

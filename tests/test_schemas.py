@@ -5,7 +5,7 @@ import pytest
 
 
 def load_module():
-    module_path = Path("skillset/paper-analysis/scripts/schemas.py")
+    module_path = Path("scripts/schemas.py")
     spec = spec_from_file_location("paper_analysis_schemas", module_path)
     module = module_from_spec(spec)
     assert spec.loader is not None

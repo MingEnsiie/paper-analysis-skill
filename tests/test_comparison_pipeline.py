@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 def load_module():
-    module_path = Path("skillset/paper-analysis/scripts/compare_papers.py")
+    module_path = Path("scripts/compare_papers.py")
     spec = spec_from_file_location("paper_analysis_compare", module_path)
     module = module_from_spec(spec)
     assert spec.loader is not None
@@ -75,4 +75,12 @@ def test_comparison_pipeline_writes_outputs_and_warnings(tmp_path):
     comparison = json.loads((out_dir / "comparison.json").read_text(encoding="utf-8"))
     assert comparison["metric_alignment"]
     assert comparison["non_comparable_warnings"]
-    assert "Accuracy" in (out_dir / "comparison.md").read_text(encoding="utf-8")
+    assert comparison["shared_task"]["summary"] == "未知"
+    assert comparison["research_gaps"] == ["当数据集或指标不一致时，不能直接做结论性排序。"]
+    assert comparison["overall_takeaways"] == ["应先基于标准化的单篇 report.json 再进行跨论文比较。"]
+    assert comparison["non_comparable_warnings"] == [
+        "由于数据集或指标未对齐，结果不可直接比较。"
+    ]
+    markdown = (out_dir / "comparison.md").read_text(encoding="utf-8")
+    assert "Accuracy" in markdown
+    assert "由于数据集或指标未对齐，结果不可直接比较。" in markdown

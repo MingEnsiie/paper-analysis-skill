@@ -1,21 +1,21 @@
-# Paper Analysis
+# 论文分析报告
 
-## Paper Overview
+## 论文概览
 
-## Research Problem
+## 研究问题
 
-## Core Idea
+## 核心思路
 
-## Method
+## 方法
 
-## Experimental Design
+## 实验设计
 
-## Results And Key Comparisons
+## 结果与关键对比
 
-## Limitations And Applicability
+## 局限性与适用范围
 
-## Reproducibility
+## 复现信息
 
-## Significance
+## 意义
 
-## Credibility Assessment
+## 可信度评估

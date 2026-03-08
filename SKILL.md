@@ -3,55 +3,55 @@ name: paper-analysis
 description: Use when analyzing one PDF research paper or comparing multiple paper reports into structured Markdown and JSON outputs with explicit uncertainty handling
 ---
 
-# Paper Analysis
+# 论文分析
 
-Use this skill for research-paper requests such as:
+在这类论文请求中使用这个 skill：
 
-- "Analyze this PDF paper"
-- "Summarize the method, experiments, and significance"
-- "Compare these papers and align baselines or metrics"
+- “分析这篇 PDF 论文”
+- “总结这篇论文的方法、实验和意义”
+- “对比这几篇论文，并对齐 baseline 或指标”
 
-## Prerequisites
+## 前置条件
 
 - Python 3.12
-- A readable PDF path for single-paper analysis, or existing normalized `report.json` files for comparison
+- 单篇分析需要可读取的 PDF 路径；多篇对比需要已有的标准化 `report.json`
 
-## Single-Paper Workflow
+## 单篇论文工作流
 
-Use `scripts/analyze_paper.py` when the input is one PDF.
+当输入是一篇 PDF 时，使用 `scripts/analyze_paper.py`。
 
 ```bash
-python skillset/paper-analysis/scripts/analyze_paper.py --pdf <paper.pdf> --out-dir <output-dir>
+python scripts/analyze_paper.py --pdf <paper.pdf> --out-dir <output-dir>
 ```
 
-Outputs:
+输出：
 
 - `extracted.json`
 - `analysis.json`
 - `report.json`
 - `report.md`
 
-Read `references/output-schema.md` before changing output fields or prompting shape.
-Read `references/prompting-guide.md` when extraction is sparse, ambiguous, or likely to need multimodal fallback.
+修改输出字段或提示词结构前，先阅读 `references/output-schema.md`。
+当抽取结果稀疏、含糊，或明显需要多模态兜底时，阅读 `references/prompting-guide.md`。
 
-## Multi-Paper Workflow
+## 多篇论文对比工作流
 
-Use `scripts/compare_papers.py` when you already have one or more normalized single-paper `report.json` files.
+当你已经有一个或多个单篇标准化 `report.json` 时，使用 `scripts/compare_papers.py`。
 
 ```bash
-python skillset/paper-analysis/scripts/compare_papers.py --report-json <report-a.json> --report-json <report-b.json> --out-dir <output-dir>
+python scripts/compare_papers.py --report-json <report-a.json> --report-json <report-b.json> --out-dir <output-dir>
 ```
 
-Outputs:
+输出：
 
 - `comparison.json`
 - `comparison.md`
 
-Read `references/comparison-rules.md` before making cross-paper rankings or alignment claims.
+做跨论文排序、指标对齐或结论归纳前，先阅读 `references/comparison-rules.md`。
 
-## Rules
+## 规则
 
-- `JSON` is the source of truth. Render Markdown from validated JSON only.
-- Use `unknown` or `not_reported` instead of guessing.
-- Record uncertain or missing evidence explicitly.
-- Mark results as non-comparable when metrics, datasets, or setups do not align.
+- `JSON` 是事实源，`Markdown` 只能从校验通过的 JSON 渲染。
+- 不确定时使用 `未知` 或 `not_reported`，不要猜测。
+- 证据缺失或不确定时要显式记录。
+- 指标、数据集或实验设置不一致时，必须标记为不可直接比较。

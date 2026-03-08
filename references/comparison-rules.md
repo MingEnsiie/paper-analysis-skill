@@ -1,7 +1,7 @@
-# Comparison Rules
+# 对比规则
 
-- Compare papers from normalized `report.json` outputs, not by rereading PDFs.
-- Preserve per-paper metric and dataset metadata during alignment.
-- If metrics or datasets differ, emit an explicit non-comparable warning.
-- Do not rank results when the experimental setup is misaligned.
-- Keep Markdown summaries derived from `comparison.json`.
+- 多篇论文对比应基于标准化后的 `report.json`，不要重新直接读 PDF。
+- 对齐时要保留每篇论文的指标和数据集元数据。
+- 指标或数据集不同，必须显式给出“不可直接比较”的警告。
+- 实验设置不一致时，不要强行给结果排名。
+- `Markdown` 摘要必须从 `comparison.json` 派生。
