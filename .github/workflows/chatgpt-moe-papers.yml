@@ -1,0 +1,46 @@
+name: Build MoE Papers Bundle
+on:
+  push:
+    branches:
+      - chatgpt-moe-papers-20260919
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download original arXiv PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p papers
+          download() {
+            url="$1"
+            out="$2"
+            echo "Downloading $url -> $out"
+            curl -fL --retry 5 --retry-delay 2 --connect-timeout 20 "$url" -o "$out"
+            test "$(head -c 4 "$out")" = "%PDF"
+          }
+          download "https://arxiv.org/pdf/2502.17298.pdf" "papers/2025-02-Delta Decompression for MoE-based LLMs Compression.pdf"
+          download "https://arxiv.org/pdf/2510.10302.pdf" "papers/2025-10-SP-MoE - Speculative Decoding and Prefetching for Accelerating MoE-based Model Inference.pdf"
+          download "https://arxiv.org/pdf/2511.10676.pdf" "papers/2025-11-Pre-Attention Expert Prediction and Prefetching for Mixture-of-Experts Large Language Models.pdf"
+          download "https://arxiv.org/pdf/2511.14102.pdf" "papers/2025-11-MoE-SpeQ - Speculative Quantized Decoding with Proactive Expert Prefetching and Offloading for Mixture-of-Experts.pdf"
+          download "https://arxiv.org/pdf/2602.03921.pdf" "papers/2026-02-SpecMD - A Comprehensive Study On Speculative Expert Prefetching.pdf"
+          download "https://arxiv.org/pdf/2603.11535.pdf" "papers/2026-03-Expert Threshold Routing for Autoregressive Language Modeling with Dynamic Computation Allocation and Load Balancing.pdf"
+          download "https://arxiv.org/pdf/2606.17952.pdf" "papers/2026-06-SoftMoE - Soft Differentiable Routing for Mixture-of-Experts in LLMs.pdf"
+          download "https://arxiv.org/pdf/2607.24787.pdf" "papers/2026-07-SpecPrefetch - Parameter-Efficient Expert Prefetching for Sparse MoE Foundation Models.pdf"
+          download "https://arxiv.org/pdf/2608.07814.pdf" "papers/2026-08-Shape Mutating Expert Compression - LorExperts and BTExperts.pdf"
+          download "https://arxiv.org/pdf/2608.11688.pdf" "papers/2026-08-APEX - Adaptive Expert Prefetching for Memory-Efficient Edge MoE Inference.pdf"
+          download "https://arxiv.org/pdf/2608.21240.pdf" "papers/2026-08-SPICE - Speculative Prefetching with Low-Rank Expert Surrogates and Heterogeneous Orchestration for MoE Inference Acceleration.pdf"
+          download "https://arxiv.org/pdf/2609.18063.pdf" "papers/2026-09-The Other Half of the Memory Wall - Serving 35B MoEs from SSD with Trained Routing Prediction.pdf"
+          download "https://arxiv.org/pdf/2609.18110.pdf" "papers/2026-09-SSD-LLaMA - SSD-Native Inference for Trillion-Parameter MoE at 1+ Token-s on a Consumer PC.pdf"
+          echo "PDF count: $(find papers -type f -name '*.pdf' | wc -l)"
+          test "$(find papers -type f -name '*.pdf' | wc -l | tr -d ' ')" = "13"
+
+      - name: Upload bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: MoE_Related_Papers_Original_PDFs
+          path: papers/*.pdf
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 7
